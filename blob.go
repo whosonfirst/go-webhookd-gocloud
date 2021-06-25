@@ -46,7 +46,7 @@ func NewBlobDispatcher(ctx context.Context, uri string) (webhookd.WebhookDispatc
 	}
 
 	q := u.Query()
-	prefix := q.Get("prefix")
+	prefix := q.Get("dispatch_prefix")
 
 	d := BlobDispatcher{
 		bucket: bucket,
