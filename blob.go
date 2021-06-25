@@ -39,14 +39,22 @@ func NewBlobDispatcher(ctx context.Context, uri string) (webhookd.WebhookDispatc
 		return nil, err
 	}
 
+	q := u.Query()
+	prefix := q.Get("dispatch_prefix")
+
+	// START OF gocloud.dev/blob gets upset with flags it doesn't recognize
+
+	q.Del("dispatch_prefix")
+	u.RawQuery = q.Encode()
+	uri = u.String()
+
+	// END OF gocloud.dev/blob gets upset with flags it doesn't recognize
+
 	bucket, err := blob.OpenBucket(ctx, uri)
 
 	if err != nil {
 		return nil, err
 	}
-
-	q := u.Query()
-	prefix := q.Get("dispatch_prefix")
 
 	d := BlobDispatcher{
 		bucket: bucket,
