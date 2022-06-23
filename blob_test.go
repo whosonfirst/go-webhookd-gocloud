@@ -2,6 +2,7 @@ package gocloud
 
 import (
 	_ "gocloud.dev/blob/fileblob"
+	_ "gocloud.dev/blob/memblob"
 )
 
 import (
@@ -28,4 +29,17 @@ func TestDispatcher(t *testing.T) {
 			t.Fatalf("Failed to create dispatcher for '%s', %v", u, err)
 		}
 	}
+
+	d, err := dispatcher.NewDispatcher(ctx, "mem://")
+
+	if err != nil {
+		t.Fatalf("Failed to create new mem:// dispatcher, %v", err)
+	}
+
+	err2 := d.Dispatch(ctx, []byte("hello world"))
+
+	if err2 != nil {
+		t.Fatalf("Failed to dispatch message, %v", err2)
+	}
+
 }
