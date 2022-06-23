@@ -1,6 +1,6 @@
 # go-webhookd-gocloud
 
-go-webhookd support for GoCloud resources.
+Go package to implement the `whosonfirst/go-webhookd` interfaces for dispatching messages to gocloud.dev/blob resources.
 
 ## Documentation
 
