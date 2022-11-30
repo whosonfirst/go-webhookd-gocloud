@@ -3,7 +3,7 @@ module github.com/whosonfirst/go-webhookd-gocloud
 go 1.18
 
 require (
-	github.com/whosonfirst/go-webhookd/v3 v3.1.2
+	github.com/whosonfirst/go-webhookd/v3 v3.2.0
 	gocloud.dev v0.27.0
 )
 
