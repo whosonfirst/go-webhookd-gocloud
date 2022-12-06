@@ -2,7 +2,6 @@ package gocloud
 
 import (
 	_ "gocloud.dev/blob/fileblob"
-	_ "gocloud.dev/blob/memblob"
 )
 
 import (
@@ -11,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestDispatcher(t *testing.T) {
+func TestBlobDispatcher(t *testing.T) {
 
 	uris := []string{
 		"file:///usr/local/data/webhookd/",
