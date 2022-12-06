@@ -25,12 +25,19 @@ func init() {
 	}
 }
 
+// PubSubDispatcher implements the `webhookd.WebhookDispatcher` interface for dispatching messages to a `gocloud.dev/pubsub.Topic` instance.
 type PubSubDispatcher struct {
 	webhookd.WebhookDispatcher
 	topic *pubsub.Topic
 	mode  string
 }
 
+// NewPubSubDispatcher returns a new `PubSubDispatcher` instance configured by 'uri' which is expected
+// to be a valid and registered `gocloud.dev/pubsub.Topic` URI. The following extra parameters are
+// supported (and removed before the underelying bucket instance is created):
+//   - `?mode={MODE}` An optional string describing how a message body should be processed and delivered to the pubsub topic. Valid options
+//     are 'all' which will deliver the entire message body in a single pubsub message or 'lines' which will deliver a separate pubsub message
+//     for each line in the (dispatch) message. Default is 'lines'.
 func NewPubSubDispatcher(ctx context.Context, uri string) (webhookd.WebhookDispatcher, error) {
 
 	u, err := url.Parse(uri)
@@ -45,6 +52,8 @@ func NewPubSubDispatcher(ctx context.Context, uri string) (webhookd.WebhookDispa
 
 	q_mode := q.Get("mode")
 	switch q_mode {
+	case "":
+		// pass
 	case "all", "lines":
 		mode = q_mode
 	default:
@@ -71,6 +80,8 @@ func NewPubSubDispatcher(ctx context.Context, uri string) (webhookd.WebhookDispa
 	return d, nil
 }
 
+// Dispatch will write 'body' to the underlying `gocloud.dev/pubsub.Topic` instance contained
+// by 'd'.
 func (d *PubSubDispatcher) Dispatch(ctx context.Context, body []byte) *webhookd.WebhookError {
 
 	var err error
